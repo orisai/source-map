@@ -10,7 +10,7 @@ use Throwable;
 /**
  * @readonly
  */
-final class ClassConstantSource implements Source
+final class ClassConstantSource implements ReflectorSource
 {
 
 	private ReflectionClassConstant $reflector;

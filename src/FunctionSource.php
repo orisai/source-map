@@ -11,7 +11,7 @@ use function implode;
 /**
  * @readonly
  */
-final class FunctionSource implements Source
+final class FunctionSource implements ReflectorSource
 {
 
 	private ReflectionFunction $reflector;

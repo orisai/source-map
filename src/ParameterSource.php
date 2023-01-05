@@ -13,7 +13,7 @@ use function assert;
 /**
  * @readonly
  */
-final class ParameterSource implements Source
+final class ParameterSource implements ReflectorSource
 {
 
 	private ReflectionParameter $reflector;

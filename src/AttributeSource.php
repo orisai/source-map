@@ -4,6 +4,7 @@ namespace Orisai\SourceMap;
 
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Reflector;
 use const PHP_VERSION_ID;
 
 /**
@@ -11,16 +12,16 @@ use const PHP_VERSION_ID;
  *
  * @readonly
  */
-final class AttributeSource implements Source
+final class AttributeSource implements ReflectorSource
 {
 
 	/** @phpstan-var TargetType */
-	private Source $target;
+	private ReflectorSource $target;
 
 	/**
 	 * @phpstan-param TargetType $target
 	 */
-	public function __construct(Source $target)
+	public function __construct(ReflectorSource $target)
 	{
 		$this->throwIfNoAttributes($target, false);
 		$this->target = $target;
@@ -29,9 +30,14 @@ final class AttributeSource implements Source
 	/**
 	 * @phpstan-return TargetType
 	 */
-	public function getTarget(): Source
+	public function getTarget(): ReflectorSource
 	{
 		return $this->target;
+	}
+
+	public function getReflector(): Reflector
+	{
+		return $this->target->getReflector();
 	}
 
 	public function toString(): string

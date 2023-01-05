@@ -10,7 +10,7 @@ use Throwable;
 /**
  * @readonly
  */
-final class ClassSource implements Source
+final class ClassSource implements ReflectorSource
 {
 
 	/** @var ReflectionClass<object> */

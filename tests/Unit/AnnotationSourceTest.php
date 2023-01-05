@@ -9,7 +9,7 @@ use Orisai\SourceMap\ClassSource;
 use Orisai\SourceMap\FunctionSource;
 use Orisai\SourceMap\MethodSource;
 use Orisai\SourceMap\PropertySource;
-use Orisai\SourceMap\Source;
+use Orisai\SourceMap\ReflectorSource;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionClassConstant;
@@ -26,12 +26,13 @@ final class AnnotationSourceTest extends TestCase
 	/**
 	 * @dataProvider provideTarget
 	 */
-	public function test(Source $target, string $string): void
+	public function test(ReflectorSource $target, string $string): void
 	{
 		$source = new AnnotationSource($target);
 
 		self::assertTrue($source->isValid());
 		self::assertSame($target, $source->getTarget());
+		self::assertSame($target->getReflector(), $source->getReflector());
 		self::assertSame("$string annotation", $source->toString());
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
@@ -81,6 +82,7 @@ final class AnnotationSourceTest extends TestCase
 
 		self::assertTrue($source->isValid());
 		self::assertEquals($target, $source->getTarget());
+		self::assertEquals($target->getReflector(), $source->getReflector());
 		self::assertSame("$class annotation", $source->toString());
 		self::assertEquals($source, unserialize(serialize($source)));
 	}

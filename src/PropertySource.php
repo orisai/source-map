@@ -10,7 +10,7 @@ use Throwable;
 /**
  * @readonly
  */
-final class PropertySource implements Source
+final class PropertySource implements ReflectorSource
 {
 
 	private ReflectionProperty $reflector;
