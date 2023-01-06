@@ -13,6 +13,8 @@ use Reflector;
 final class EmptyAboveReflectorSource implements AboveReflectorSource
 {
 
+	use CheckNotWrappedAboveReflectorSource;
+
 	/** @var T */
 	private ReflectorSource $target;
 
@@ -21,6 +23,7 @@ final class EmptyAboveReflectorSource implements AboveReflectorSource
 	 */
 	public function __construct(ReflectorSource $target)
 	{
+		$this->throwIfWrapped($target);
 		$this->target = $target;
 	}
 

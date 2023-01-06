@@ -17,6 +17,8 @@ use const PHP_VERSION_ID;
 final class AttributeSource implements AboveReflectorSource
 {
 
+	use CheckNotWrappedAboveReflectorSource;
+
 	/** @var T */
 	private ReflectorSource $target;
 
@@ -25,6 +27,7 @@ final class AttributeSource implements AboveReflectorSource
 	 */
 	public function __construct(ReflectorSource $target)
 	{
+		$this->throwIfWrapped($target);
 		$this->throwIfNoAttributes($target, false);
 		$this->target = $target;
 	}

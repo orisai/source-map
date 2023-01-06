@@ -16,6 +16,8 @@ use function method_exists;
 final class AnnotationSource implements AboveReflectorSource
 {
 
+	use CheckNotWrappedAboveReflectorSource;
+
 	/** @var T */
 	private ReflectorSource $target;
 
@@ -24,6 +26,7 @@ final class AnnotationSource implements AboveReflectorSource
 	 */
 	public function __construct(ReflectorSource $target)
 	{
+		$this->throwIfWrapped($target);
 		$this->throwIfNoAttributes($target, false);
 		$this->target = $target;
 	}
