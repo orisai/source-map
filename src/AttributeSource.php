@@ -5,31 +5,23 @@ namespace Orisai\SourceMap;
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
 use Reflector;
+use function method_exists;
 use const PHP_VERSION_ID;
 
 /**
- * @phpstan-type TargetType ClassConstantSource|ClassSource|FunctionSource|MethodSource|ParameterSource|PropertySource
- *
  * @readonly
  */
-final class AttributeSource implements ReflectorSource
+final class AttributeSource implements AboveReflectorSource
 {
 
-	/** @phpstan-var TargetType */
 	private ReflectorSource $target;
 
-	/**
-	 * @phpstan-param TargetType $target
-	 */
 	public function __construct(ReflectorSource $target)
 	{
 		$this->throwIfNoAttributes($target, false);
 		$this->target = $target;
 	}
 
-	/**
-	 * @phpstan-return TargetType
-	 */
 	public function getTarget(): ReflectorSource
 	{
 		return $this->target;
@@ -53,22 +45,22 @@ final class AttributeSource implements ReflectorSource
 			&& $this->hasAttributes($this->target);
 	}
 
-	/**
-	 * @phpstan-param TargetType $source
-	 */
-	private function hasAttributes(Source $source): bool
+	private function hasAttributes(ReflectorSource $source): bool
 	{
 		if (PHP_VERSION_ID < 8_00_00) {
 			return false;
 		}
 
-		return $source->getReflector()->getAttributes() !== [];
+		$reflector = $source->getReflector();
+
+		if (!method_exists($reflector, 'getAttributes')) {
+			return false;
+		}
+
+		return $reflector->getAttributes() !== [];
 	}
 
-	/**
-	 * @phpstan-param TargetType $source
-	 */
-	private function throwIfNoAttributes($source, bool $deserializing): void
+	private function throwIfNoAttributes(ReflectorSource $source, bool $deserializing): void
 	{
 		if ($this->hasAttributes($source)) {
 			return;

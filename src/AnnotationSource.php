@@ -5,30 +5,22 @@ namespace Orisai\SourceMap;
 use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
 use Reflector;
+use function method_exists;
 
 /**
- * @phpstan-type TargetType ClassSource|FunctionSource|MethodSource|PropertySource
- *
  * @readonly
  */
-final class AnnotationSource implements ReflectorSource
+final class AnnotationSource implements AboveReflectorSource
 {
 
-	/** @phpstan-var TargetType */
 	private ReflectorSource $target;
 
-	/**
-	 * @phpstan-param TargetType $target
-	 */
 	public function __construct(ReflectorSource $target)
 	{
 		$this->throwIfNoAttributes($target, false);
 		$this->target = $target;
 	}
 
-	/**
-	 * @phpstan-return TargetType
-	 */
 	public function getTarget(): ReflectorSource
 	{
 		return $this->target;
@@ -52,18 +44,18 @@ final class AnnotationSource implements ReflectorSource
 			&& $this->hasDocComment($this->target);
 	}
 
-	/**
-	 * @phpstan-param TargetType $source
-	 */
-	private function hasDocComment(Source $source): bool
+	private function hasDocComment(ReflectorSource $source): bool
 	{
-		return $source->getReflector()->getDocComment() !== false;
+		$reflector = $source->getReflector();
+
+		if (!method_exists($reflector, 'getDocComment')) {
+			return false;
+		}
+
+		return $reflector->getDocComment() !== false;
 	}
 
-	/**
-	 * @phpstan-param TargetType $source
-	 */
-	private function throwIfNoAttributes($source, bool $deserializing): void
+	private function throwIfNoAttributes(ReflectorSource $source, bool $deserializing): void
 	{
 		if ($this->hasDocComment($source)) {
 			return;
