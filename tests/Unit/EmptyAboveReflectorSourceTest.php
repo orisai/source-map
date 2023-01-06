@@ -18,7 +18,7 @@ use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
-use Tests\Orisai\SourceMap\Doubles\ReflectedClassWithAttributes;
+use Tests\Orisai\SourceMap\Doubles\AnnotatedReflectedClass;
 use function serialize;
 use function unserialize;
 
@@ -41,7 +41,7 @@ final class EmptyAboveReflectorSourceTest extends TestCase
 
 	public function provideTarget(): Generator
 	{
-		$class = ReflectedClassWithAttributes::class;
+		$class = AnnotatedReflectedClass::class;
 
 		yield [
 			new ClassSource(new ReflectionClass($class)),
@@ -79,9 +79,9 @@ final class EmptyAboveReflectorSourceTest extends TestCase
 	public function testSerializationBC(): void
 	{
 		// phpcs:ignore SlevomatCodingStandard.Files.LineLength
-		$serialized = 'O:42:"Orisai\SourceMap\EmptyAboveReflectorSource":1:{s:6:"target";O:28:"Orisai\SourceMap\ClassSource":1:{s:5:"class";s:59:"Tests\Orisai\SourceMap\Doubles\ReflectedClassWithAttributes";}}';
+		$serialized = 'O:42:"Orisai\SourceMap\EmptyAboveReflectorSource":1:{s:6:"target";O:28:"Orisai\SourceMap\ClassSource":1:{s:5:"class";s:54:"Tests\Orisai\SourceMap\Doubles\AnnotatedReflectedClass";}}';
 
-		$class = ReflectedClassWithAttributes::class;
+		$class = AnnotatedReflectedClass::class;
 		$target = new ClassSource(new ReflectionClass($class));
 
 		$source = unserialize($serialized);
