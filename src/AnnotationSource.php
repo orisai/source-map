@@ -8,13 +8,20 @@ use Reflector;
 use function method_exists;
 
 /**
+ * @template T of ReflectorSource
+ * @implements AboveReflectorSource<T>
+ *
  * @readonly
  */
 final class AnnotationSource implements AboveReflectorSource
 {
 
+	/** @var T */
 	private ReflectorSource $target;
 
+	/**
+	 * @param T $target
+	 */
 	public function __construct(ReflectorSource $target)
 	{
 		$this->throwIfNoAttributes($target, false);

@@ -2,9 +2,15 @@
 
 namespace Orisai\SourceMap;
 
+/**
+ * @template T of ReflectorSource
+ */
 interface AboveReflectorSource extends ReflectorSource
 {
 
+	/**
+	 * @return T
+	 */
 	public function getTarget(): ReflectorSource;
 
 }

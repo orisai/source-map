@@ -9,13 +9,20 @@ use function method_exists;
 use const PHP_VERSION_ID;
 
 /**
+ * @template T of ReflectorSource
+ * @implements AboveReflectorSource<T>
+ *
  * @readonly
  */
 final class AttributeSource implements AboveReflectorSource
 {
 
+	/** @var T */
 	private ReflectorSource $target;
 
+	/**
+	 * @param T $target
+	 */
 	public function __construct(ReflectorSource $target)
 	{
 		$this->throwIfNoAttributes($target, false);

@@ -5,13 +5,20 @@ namespace Orisai\SourceMap;
 use Reflector;
 
 /**
+ * @template T of ReflectorSource
+ * @implements AboveReflectorSource<T>
+ *
  * @readonly
  */
 final class EmptyAboveReflectorSource implements AboveReflectorSource
 {
 
+	/** @var T */
 	private ReflectorSource $target;
 
+	/**
+	 * @param T $target
+	 */
 	public function __construct(ReflectorSource $target)
 	{
 		$this->target = $target;
