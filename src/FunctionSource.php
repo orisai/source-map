@@ -60,6 +60,8 @@ final class FunctionSource implements ReflectorSource
 
 	public function __serialize(): array
 	{
+		$this->throwIfInvalid();
+
 		return [
 			'function' => $this->reflector->getName(),
 		];

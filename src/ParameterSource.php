@@ -52,8 +52,6 @@ final class ParameterSource implements ReflectorSource
 
 	public function toString(): string
 	{
-		$this->throwIfInvalid();
-
 		return $this->getFunction()->toString(
 			[
 				$this->reflector->getName(),
@@ -72,13 +70,13 @@ final class ParameterSource implements ReflectorSource
 			return;
 		}
 
-		throw InvalidState::create()
-			->withMessage("Deserialization failed due to following error:\n{$this->failure->getMessage()}")
-			->withPrevious($this->failure);
+		throw $this->failure;
 	}
 
 	public function __serialize(): array
 	{
+		$this->throwIfInvalid();
+
 		$class = $this->reflector->getDeclaringClass();
 
 		return [
@@ -99,7 +97,14 @@ final class ParameterSource implements ReflectorSource
 				? new ReflectionParameter([$class, $function], $parameter)
 				: new ReflectionParameter($function, $parameter);
 		} catch (ReflectionException $exception) {
-			$this->failure = $exception;
+			$message = $exception->getMessage();
+			if ($message === 'The parameter specified by its name could not be found') {
+				$message = "Parameter {$data['class']}::{$data['function']}({$data['parameter']}) does not exist";
+			}
+
+			$this->failure = InvalidState::create()
+				->withMessage("Deserialization failed due to following error:\n$message")
+				->withPrevious($exception);
 		}
 	}
 

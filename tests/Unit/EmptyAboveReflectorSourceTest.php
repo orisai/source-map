@@ -3,6 +3,8 @@
 namespace Tests\Orisai\SourceMap\Unit;
 
 use Generator;
+use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\SourceMap\AnnotationSource;
 use Orisai\SourceMap\ClassConstantSource;
 use Orisai\SourceMap\ClassSource;
 use Orisai\SourceMap\EmptyAboveReflectorSource;
@@ -74,6 +76,23 @@ final class EmptyAboveReflectorSourceTest extends TestCase
 			new ParameterSource(new ReflectionParameter([$class, 'test'], 'test')),
 			"{$class}->test(test)",
 		];
+	}
+
+	public function testWrappedTarget(): void
+	{
+		$target = new AnnotationSource(new ClassSource(new ReflectionClass(AnnotatedReflectedClass::class)));
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(
+			<<<'MSG'
+Context: Creating 'Orisai\SourceMap\EmptyAboveReflectorSource'.
+Problem: Given class 'Orisai\SourceMap\AnnotationSource' implements
+         'Orisai\SourceMap\AboveReflectorSource' and cannot be wrapped in
+         another 'AboveReflectorSource'.
+MSG,
+		);
+
+		new EmptyAboveReflectorSource($target);
 	}
 
 	public function testSerializationBC(): void

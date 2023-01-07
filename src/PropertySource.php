@@ -65,6 +65,8 @@ final class PropertySource implements ReflectorSource
 
 	public function __serialize(): array
 	{
+		$this->throwIfInvalid();
+
 		return [
 			'class' => $this->reflector->getDeclaringClass()->getName(),
 			'property' => $this->reflector->getName(),

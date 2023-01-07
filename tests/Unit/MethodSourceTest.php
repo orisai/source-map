@@ -2,14 +2,20 @@
 
 namespace Tests\Orisai\SourceMap\Unit;
 
+use Closure;
+use Generator;
+use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\SourceMap\ClassSource;
 use Orisai\SourceMap\MethodSource;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 use Tests\Orisai\SourceMap\Doubles\AnnotatedReflectedClass;
+use function preg_replace;
 use function serialize;
 use function unserialize;
+use const PHP_EOL;
 
 final class MethodSourceTest extends TestCase
 {
@@ -66,6 +72,55 @@ final class MethodSourceTest extends TestCase
 		self::assertSame("{$class}->test(foo, bar)", $source->toString(['foo', 'bar']));
 
 		self::assertEquals($source, unserialize(serialize($source)));
+	}
+
+	/**
+	 * @dataProvider provideUnSerializationFailure
+	 */
+	public function testUnSerializationFailure(Closure $call): void
+	{
+		// phpcs:ignore SlevomatCodingStandard.Files.LineLength
+		$serialized = 'O:29:"Orisai\SourceMap\MethodSource":2:{s:5:"class";s:41:"Tests\Orisai\SourceMap\Doubles\EmptyClass";s:6:"method";s:4:"test";}';
+		$source = unserialize($serialized);
+		self::assertInstanceOf(MethodSource::class, $source);
+
+		self::assertFalse($source->isValid());
+
+		$e = null;
+		try {
+			$call($source);
+		} catch (InvalidState $e) {
+			//  Handled bellow
+		}
+
+		self::assertInstanceOf(InvalidState::class, $e);
+		self::assertSame(
+			<<<'MSG'
+Deserialization failed due to following error:
+Method Tests\Orisai\SourceMap\Doubles\EmptyClass::test() does not exist
+MSG,
+			preg_replace('~\R~u', PHP_EOL, $e->getMessage()),
+		);
+		self::assertInstanceOf(ReflectionException::class, $e->getPrevious());
+	}
+
+	public function provideUnSerializationFailure(): Generator
+	{
+		yield [
+			static fn (MethodSource $source) => $source->getClass(),
+		];
+
+		yield [
+			static fn (MethodSource $source) => $source->getReflector(),
+		];
+
+		yield [
+			static fn (MethodSource $source) => $source->toString(),
+		];
+
+		yield [
+			static fn (MethodSource $source) => serialize($source),
+		];
 	}
 
 }

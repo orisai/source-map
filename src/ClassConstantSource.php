@@ -38,8 +38,6 @@ final class ClassConstantSource implements ReflectorSource
 
 	public function toString(): string
 	{
-		$this->throwIfInvalid();
-
 		return "{$this->getClass()->toString()}::{$this->reflector->getName()}";
 	}
 
@@ -61,6 +59,8 @@ final class ClassConstantSource implements ReflectorSource
 
 	public function __serialize(): array
 	{
+		$this->throwIfInvalid();
+
 		return [
 			'class' => $this->reflector->getDeclaringClass()->getName(),
 			'constant' => $this->reflector->getName(),

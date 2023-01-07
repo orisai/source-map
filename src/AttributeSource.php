@@ -57,6 +57,7 @@ final class AttributeSource implements AboveReflectorSource
 
 	private function hasAttributes(ReflectorSource $source): bool
 	{
+		/** @infection-ignore-all */
 		if (PHP_VERSION_ID < 8_00_00) {
 			return false;
 		}
@@ -81,6 +82,7 @@ final class AttributeSource implements AboveReflectorSource
 			->withContext("$action AttributeSource.")
 			->withProblem('Targeted source does not have any attributes.');
 
+		/** @infection-ignore-all */
 		if (PHP_VERSION_ID < 8_00_00) {
 			$message->with('Hint', 'Attributes are supported since PHP 8.0');
 		}

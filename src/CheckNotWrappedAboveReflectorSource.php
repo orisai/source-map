@@ -7,10 +7,13 @@ use Orisai\Exceptions\Message;
 use Orisai\Utils\Reflection\Classes;
 use function get_class;
 
+/**
+ * @internal
+ */
 trait CheckNotWrappedAboveReflectorSource
 {
 
-	public function throwIfWrapped(ReflectorSource $target): void
+	private function throwIfWrapped(ReflectorSource $target): void
 	{
 		if (!$target instanceof AboveReflectorSource) {
 			return;

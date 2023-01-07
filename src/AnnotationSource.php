@@ -27,7 +27,7 @@ final class AnnotationSource implements AboveReflectorSource
 	public function __construct(ReflectorSource $target)
 	{
 		$this->throwIfWrapped($target);
-		$this->throwIfNoAttributes($target, false);
+		$this->throwIfNoDocComment($target, false);
 		$this->target = $target;
 	}
 
@@ -43,7 +43,7 @@ final class AnnotationSource implements AboveReflectorSource
 
 	public function toString(): string
 	{
-		$this->throwIfNoAttributes($this->target, true);
+		$this->throwIfNoDocComment($this->target, true);
 
 		return "{$this->getTarget()->toString()} annotation";
 	}
@@ -65,7 +65,7 @@ final class AnnotationSource implements AboveReflectorSource
 		return $reflector->getDocComment() !== false;
 	}
 
-	private function throwIfNoAttributes(ReflectorSource $source, bool $deserializing): void
+	private function throwIfNoDocComment(ReflectorSource $source, bool $deserializing): void
 	{
 		if ($this->hasDocComment($source)) {
 			return;
@@ -74,7 +74,7 @@ final class AnnotationSource implements AboveReflectorSource
 		$action = $deserializing ? 'Deserializing' : 'Creating';
 		$message = Message::create()
 			->withContext("$action AnnotationSource.")
-			->withProblem('Targeted source does not have any annotation.');
+			->withProblem('Targeted source does not have any annotations.');
 
 		throw InvalidArgument::create()
 			->withMessage($message);

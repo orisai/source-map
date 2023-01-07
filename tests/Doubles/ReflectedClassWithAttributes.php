@@ -2,6 +2,8 @@
 
 namespace Tests\Orisai\SourceMap\Doubles;
 
+// phpcs:disable SlevomatCodingStandard.Classes.RequireSingleLineMethodSignature
+
 #[TestAttribute]
 final class ReflectedClassWithAttributes
 {
@@ -15,7 +17,10 @@ final class ReflectedClassWithAttributes
 	public static string $staticTest = 'test';
 
 	#[TestAttribute]
-	public function test(#[TestAttribute] string $test): string
+	public function test(
+		#[TestAttribute]
+		string $test
+	): string
 	{
 		return $test;
 	}

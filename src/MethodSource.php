@@ -71,6 +71,8 @@ final class MethodSource implements ReflectorSource
 
 	public function __serialize(): array
 	{
+		$this->throwIfInvalid();
+
 		return [
 			'class' => $this->reflector->getDeclaringClass()->getName(),
 			'method' => $this->reflector->getName(),
