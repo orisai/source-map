@@ -25,6 +25,7 @@ final class FileSourceTest extends TestCase
 		self::assertNull($source->getLine());
 		self::assertNull($source->getColumn());
 		self::assertSame($fullPath, $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 
@@ -58,6 +59,7 @@ final class FileSourceTest extends TestCase
 		self::assertSame($fullPath, $source->getFullPath());
 		self::assertSame('tests/Unit/FileSourceTest.php', $source->getRelativePath());
 		self::assertSame('.../tests/Unit/FileSourceTest.php', $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 
@@ -71,6 +73,7 @@ final class FileSourceTest extends TestCase
 		self::assertSame(69, $source->getLine());
 		self::assertSame(666, $source->getColumn());
 		self::assertSame("$fullPath:69:666", $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 
@@ -84,6 +87,7 @@ final class FileSourceTest extends TestCase
 		self::assertSame(42, $source->getLine());
 		self::assertNull($source->getColumn());
 		self::assertSame("$fullPath:42", $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 
@@ -97,6 +101,7 @@ final class FileSourceTest extends TestCase
 		self::assertSame(1, $source->getLine());
 		self::assertSame(420, $source->getColumn());
 		self::assertSame("$fullPath:1:420", $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

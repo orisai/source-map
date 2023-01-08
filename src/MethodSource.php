@@ -69,6 +69,11 @@ final class MethodSource implements ReflectorSource
 			->withPrevious($this->failure);
 	}
 
+	public function __toString(): string
+	{
+		return $this->toString();
+	}
+
 	public function __serialize(): array
 	{
 		$this->throwIfInvalid();

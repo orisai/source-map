@@ -91,6 +91,11 @@ final class FileSource implements Source
 		return is_file($this->fullPath);
 	}
 
+	public function __toString(): string
+	{
+		return $this->toString();
+	}
+
 	public function __serialize(): array
 	{
 		return [

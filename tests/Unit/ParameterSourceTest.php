@@ -41,6 +41,7 @@ final class ParameterSourceTest extends TestCase
 		self::assertEquals($methodSource, $source->getFunction());
 		self::assertSame($reflector, $source->getReflector());
 		self::assertSame("{$class}->test(test)", $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 
@@ -56,6 +57,7 @@ final class ParameterSourceTest extends TestCase
 		self::assertEquals($functionSource, $source->getFunction());
 		self::assertSame($reflector, $source->getReflector());
 		self::assertSame("$function(test)", $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

@@ -32,6 +32,7 @@ final class PropertySourceTest extends TestCase
 		self::assertEquals($classSource, $source->getClass());
 		self::assertSame($reflector, $source->getReflector());
 		self::assertSame("$class->\$test", $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

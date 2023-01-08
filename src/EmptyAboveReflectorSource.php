@@ -47,6 +47,11 @@ final class EmptyAboveReflectorSource implements AboveReflectorSource
 		return $this->target->isValid();
 	}
 
+	public function __toString(): string
+	{
+		return $this->toString();
+	}
+
 	public function __serialize(): array
 	{
 		return [

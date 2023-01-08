@@ -73,6 +73,11 @@ final class ParameterSource implements ReflectorSource
 		throw $this->failure;
 	}
 
+	public function __toString(): string
+	{
+		return $this->toString();
+	}
+
 	public function __serialize(): array
 	{
 		$this->throwIfInvalid();

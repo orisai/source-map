@@ -29,6 +29,11 @@ final class TestReflectorSource implements ReflectorSource
 		return true;
 	}
 
+	public function __toString(): string
+	{
+		return $this->toString();
+	}
+
 	public function __serialize(): array
 	{
 		return [];

@@ -34,6 +34,7 @@ final class FunctionSourceTest extends TestCase
 		self::assertTrue($source->isValid());
 		self::assertSame($reflector, $source->getReflector());
 		self::assertSame("$function()", $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

@@ -80,6 +80,11 @@ final class AnnotationSource implements AboveReflectorSource
 			->withMessage($message);
 	}
 
+	public function __toString(): string
+	{
+		return $this->toString();
+	}
+
 	public function __serialize(): array
 	{
 		return [

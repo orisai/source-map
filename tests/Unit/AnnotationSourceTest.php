@@ -44,6 +44,7 @@ final class AnnotationSourceTest extends TestCase
 		self::assertSame($target, $source->getTarget());
 		self::assertSame($target->getReflector(), $source->getReflector());
 		self::assertSame("$string annotation", $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

@@ -9,6 +9,8 @@ interface Source
 
 	public function isValid(): bool;
 
+	public function __toString(): string;
+
 	/**
 	 * @return array<int|string, mixed>
 	 */

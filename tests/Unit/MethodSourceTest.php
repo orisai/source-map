@@ -33,6 +33,7 @@ final class MethodSourceTest extends TestCase
 		self::assertSame($reflector, $source->getReflector());
 
 		self::assertSame("{$class}->test()", $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertSame("{$class}->test(foo)", $source->toString(['foo']));
 		self::assertSame("{$class}->test(foo, bar)", $source->toString(['foo', 'bar']));
 
@@ -47,6 +48,7 @@ final class MethodSourceTest extends TestCase
 		$source = new MethodSource($reflector);
 
 		self::assertSame("$class::staticTest()", $source->toString());
+		self::assertSame($source->toString(), (string) $source);
 		self::assertSame("$class::staticTest(foo)", $source->toString(['foo']));
 		self::assertSame("$class::staticTest(foo, bar)", $source->toString(['foo', 'bar']));
 	}
