@@ -56,10 +56,14 @@ use Orisai\SourceMap\FileSource;
 $source = new FileSource($path);
 $source->getFullPath(); // $path
 $source->getRelativePath(); // null
+$source->getLine(); // null
+$source->getColumn(); // null
 
-$source = new FileSource($path, $basePath);
+$source = new FileSource($path, $basePath, 42, 314);
 $source->getFullPath(); // $path
 $source->getRelativePath(); // string, e.g. .../relative/path.txt
+$source->getLine(); // 42
+$source->getColumn(); // 314
 ```
 
 ### Reflection

@@ -22,6 +22,8 @@ final class FileSourceTest extends TestCase
 		self::assertTrue($source->isValid());
 		self::assertSame($fullPath, $source->getFullPath());
 		self::assertNull($source->getRelativePath());
+		self::assertNull($source->getLine());
+		self::assertNull($source->getColumn());
 		self::assertSame($fullPath, $source->toString());
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
@@ -30,7 +32,8 @@ final class FileSourceTest extends TestCase
 	{
 		$fullPath = __FILE__;
 		$length = strlen($fullPath);
-		$serialized = "O:27:\"Orisai\SourceMap\FileSource\":2:{s:8:\"fullPath\";s:$length:\"$fullPath\";s:8:\"basePath\";N;}";
+		// phpcs:ignore SlevomatCodingStandard.Files.LineLength
+		$serialized = "O:27:\"Orisai\SourceMap\FileSource\":4:{s:8:\"fullPath\";s:$length:\"$fullPath\";s:8:\"basePath\";N;s:4:\"line\";N;s:6:\"column\";N;}";
 
 		$source = unserialize($serialized);
 		self::assertInstanceOf(FileSource::class, $source);
@@ -38,6 +41,8 @@ final class FileSourceTest extends TestCase
 		self::assertTrue($source->isValid());
 		self::assertSame($fullPath, $source->getFullPath());
 		self::assertNull($source->getRelativePath());
+		self::assertNull($source->getLine());
+		self::assertNull($source->getColumn());
 		self::assertSame($fullPath, $source->toString());
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
@@ -53,6 +58,45 @@ final class FileSourceTest extends TestCase
 		self::assertSame($fullPath, $source->getFullPath());
 		self::assertSame('tests/Unit/FileSourceTest.php', $source->getRelativePath());
 		self::assertSame('.../tests/Unit/FileSourceTest.php', $source->toString());
+		self::assertEquals($source, unserialize(serialize($source)));
+	}
+
+	public function testLineColumn(): void
+	{
+		$fullPath = __FILE__;
+
+		$source = new FileSource(__FILE__, null, 69, 666);
+
+		self::assertTrue($source->isValid());
+		self::assertSame(69, $source->getLine());
+		self::assertSame(666, $source->getColumn());
+		self::assertSame("$fullPath:69:666", $source->toString());
+		self::assertEquals($source, unserialize(serialize($source)));
+	}
+
+	public function testLine(): void
+	{
+		$fullPath = __FILE__;
+
+		$source = new FileSource(__FILE__, null, 42);
+
+		self::assertTrue($source->isValid());
+		self::assertSame(42, $source->getLine());
+		self::assertNull($source->getColumn());
+		self::assertSame("$fullPath:42", $source->toString());
+		self::assertEquals($source, unserialize(serialize($source)));
+	}
+
+	public function testColumn(): void
+	{
+		$fullPath = __FILE__;
+
+		$source = new FileSource(__FILE__, null, null, 420);
+
+		self::assertTrue($source->isValid());
+		self::assertSame(1, $source->getLine());
+		self::assertSame(420, $source->getColumn());
+		self::assertSame("$fullPath:1:420", $source->toString());
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

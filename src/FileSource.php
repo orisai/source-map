@@ -15,10 +15,26 @@ final class FileSource implements Source
 
 	private ?string $basePath;
 
-	public function __construct(string $fullPath, ?string $basePath = null)
+	/** @var int<1, max>|null */
+	private ?int $line;
+
+	/** @var int<1, max>|null */
+	private ?int $column;
+
+	/**
+	 * @param int<1, max>|null $line
+	 * @param int<1, max>|null $column
+	 */
+	public function __construct(string $fullPath, ?string $basePath = null, ?int $line = null, ?int $column = null)
 	{
+		if ($column !== null && $line === null) {
+			$line = 1;
+		}
+
 		$this->fullPath = $fullPath;
 		$this->basePath = $basePath;
+		$this->line = $line;
+		$this->column = $column;
 	}
 
 	public function getFullPath(): string
@@ -35,13 +51,39 @@ final class FileSource implements Source
 		return Path::makeRelative($this->fullPath, $this->basePath);
 	}
 
+	/**
+	 * @return int<1, max>|null
+	 */
+	public function getLine(): ?int
+	{
+		return $this->line;
+	}
+
+	/**
+	 * @return int<1, max>|null
+	 */
+	public function getColumn(): ?int
+	{
+		return $this->column;
+	}
+
 	public function toString(): string
 	{
 		$relative = $this->getRelativePath();
 
-		return $relative !== null
+		$path = $relative !== null
 			? ".../$relative"
 			: $this->getFullPath();
+
+		if ($this->line !== null) {
+			$path .= ":$this->line";
+		}
+
+		if ($this->column !== null) {
+			$path .= ":$this->column";
+		}
+
+		return $path;
 	}
 
 	public function isValid(): bool
@@ -54,6 +96,8 @@ final class FileSource implements Source
 		return [
 			'fullPath' => $this->fullPath,
 			'basePath' => $this->basePath,
+			'line' => $this->line,
+			'column' => $this->column,
 		];
 	}
 
@@ -61,6 +105,8 @@ final class FileSource implements Source
 	{
 		$this->fullPath = $data['fullPath'];
 		$this->basePath = $data['basePath'];
+		$this->line = $data['line'];
+		$this->column = $data['column'];
 	}
 
 }
