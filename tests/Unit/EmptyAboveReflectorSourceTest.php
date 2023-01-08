@@ -3,11 +3,11 @@
 namespace Tests\Orisai\SourceMap\Unit;
 
 use Generator;
-use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\SourceMap\AnnotationSource;
 use Orisai\SourceMap\ClassConstantSource;
 use Orisai\SourceMap\ClassSource;
 use Orisai\SourceMap\EmptyAboveReflectorSource;
+use Orisai\SourceMap\Exception\InvalidSource;
 use Orisai\SourceMap\FunctionSource;
 use Orisai\SourceMap\MethodSource;
 use Orisai\SourceMap\ParameterSource;
@@ -83,7 +83,7 @@ final class EmptyAboveReflectorSourceTest extends TestCase
 	{
 		$target = new AnnotationSource(new ClassSource(new ReflectionClass(AnnotatedReflectedClass::class)));
 
-		$this->expectException(InvalidArgument::class);
+		$this->expectException(InvalidSource::class);
 		$this->expectExceptionMessage(
 			<<<'MSG'
 Context: Creating 'Orisai\SourceMap\EmptyAboveReflectorSource'.

@@ -2,8 +2,8 @@
 
 namespace Orisai\SourceMap;
 
-use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\SourceMap\Exception\InvalidSource;
 use Reflector;
 use function method_exists;
 
@@ -76,7 +76,7 @@ final class AnnotationSource implements AboveReflectorSource
 			->withContext("$action AnnotationSource.")
 			->withProblem('Targeted source does not have any annotations.');
 
-		throw InvalidArgument::create()
+		throw InvalidSource::create($this)
 			->withMessage($message);
 	}
 

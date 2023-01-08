@@ -2,8 +2,8 @@
 
 namespace Orisai\SourceMap;
 
-use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\SourceMap\Exception\InvalidSource;
 use Reflector;
 use function method_exists;
 use const PHP_VERSION_ID;
@@ -87,7 +87,7 @@ final class AttributeSource implements AboveReflectorSource
 			$message->with('Hint', 'Attributes are supported since PHP 8.0');
 		}
 
-		throw InvalidArgument::create()
+		throw InvalidSource::create($this)
 			->withMessage($message);
 	}
 

@@ -197,6 +197,6 @@ if ($source->isValid()) {
 
 if (!$source->isValid()) {
 	// Calling any method that requires source throws an exception
-	$source->toString(); // throws InvalidState
+	$source->toString(); // throws InvalidSource
 }
 ```

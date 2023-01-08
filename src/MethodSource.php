@@ -2,7 +2,7 @@
 
 namespace Orisai\SourceMap;
 
-use Orisai\Exceptions\Logic\InvalidState;
+use Orisai\SourceMap\Exception\InvalidSource;
 use ReflectionException;
 use ReflectionMethod;
 use Throwable;
@@ -64,7 +64,7 @@ final class MethodSource implements ReflectorSource
 			return;
 		}
 
-		throw InvalidState::create()
+		throw InvalidSource::create($this)
 			->withMessage("Deserialization failed due to following error:\n{$this->failure->getMessage()}")
 			->withPrevious($this->failure);
 	}

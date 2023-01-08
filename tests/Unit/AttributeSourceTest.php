@@ -4,12 +4,11 @@ namespace Tests\Orisai\SourceMap\Unit;
 
 use Closure;
 use Generator;
-use Orisai\Exceptions\Logic\InvalidArgument;
-use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\SourceMap\AnnotationSource;
 use Orisai\SourceMap\AttributeSource;
 use Orisai\SourceMap\ClassConstantSource;
 use Orisai\SourceMap\ClassSource;
+use Orisai\SourceMap\Exception\InvalidSource;
 use Orisai\SourceMap\FunctionSource;
 use Orisai\SourceMap\MethodSource;
 use Orisai\SourceMap\ParameterSource;
@@ -96,7 +95,7 @@ final class AttributeSourceTest extends TestCase
 	{
 		$target = new AnnotationSource(new ClassSource(new ReflectionClass(AnnotatedReflectedClass::class)));
 
-		$this->expectException(InvalidArgument::class);
+		$this->expectException(InvalidSource::class);
 		$this->expectExceptionMessage(
 			<<<'MSG'
 Context: Creating 'Orisai\SourceMap\AttributeSource'.
@@ -113,7 +112,7 @@ MSG,
 	{
 		$target = new TestReflectorSource();
 
-		$this->expectException(InvalidArgument::class);
+		$this->expectException(InvalidSource::class);
 		if (PHP_VERSION_ID < 8_00_00) {
 			$this->expectExceptionMessage(
 				<<<'MSG'
@@ -138,7 +137,7 @@ MSG,
 	{
 		$target = new ClassSource(new ReflectionClass(EmptyClass::class));
 
-		$this->expectException(InvalidArgument::class);
+		$this->expectException(InvalidSource::class);
 		if (PHP_VERSION_ID < 8_00_00) {
 			$this->expectExceptionMessage(
 				<<<'MSG'
@@ -168,7 +167,7 @@ MSG,
 		self::assertInstanceOf(AttributeSource::class, $source);
 		self::assertFalse($source->isValid());
 
-		$this->expectException(InvalidArgument::class);
+		$this->expectException(InvalidSource::class);
 		$this->expectExceptionMessage(
 			<<<'MSG'
 Context: Deserializing AttributeSource.
@@ -222,11 +221,11 @@ MSG,
 		$e = null;
 		try {
 			$call($source);
-		} catch (InvalidState $e) {
+		} catch (InvalidSource $e) {
 			//  Handled bellow
 		}
 
-		self::assertInstanceOf(InvalidState::class, $e);
+		self::assertInstanceOf(InvalidSource::class, $e);
 		self::assertSame(
 			<<<'MSG'
 Deserialization failed due to following error:
@@ -236,6 +235,7 @@ MSG,
 		);
 
 		self::assertInstanceOf(ReflectionException::class, $e->getPrevious());
+		self::assertSame($source->getTarget(), $e->getSource());
 	}
 
 	public function provideTargetUnSerializationFailure(): Generator

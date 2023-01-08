@@ -4,8 +4,8 @@ namespace Tests\Orisai\SourceMap\Unit;
 
 use Closure;
 use Generator;
-use Orisai\Exceptions\Logic\InvalidState;
 use Orisai\SourceMap\ClassSource;
+use Orisai\SourceMap\Exception\InvalidSource;
 use Orisai\SourceMap\PropertySource;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -80,11 +80,11 @@ final class PropertySourceTest extends TestCase
 		$e = null;
 		try {
 			$call($source);
-		} catch (InvalidState $e) {
+		} catch (InvalidSource $e) {
 			//  Handled bellow
 		}
 
-		self::assertInstanceOf(InvalidState::class, $e);
+		self::assertInstanceOf(InvalidSource::class, $e);
 		self::assertSame(
 			<<<'MSG'
 Deserialization failed due to following error:
@@ -93,6 +93,7 @@ MSG,
 			preg_replace('~\R~u', PHP_EOL, $e->getMessage()),
 		);
 		self::assertInstanceOf(ReflectionException::class, $e->getPrevious());
+		self::assertSame($source, $e->getSource());
 	}
 
 	public function provideUnSerializationFailure(): Generator

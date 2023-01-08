@@ -2,7 +2,7 @@
 
 namespace Orisai\SourceMap;
 
-use Orisai\Exceptions\Logic\InvalidState;
+use Orisai\SourceMap\Exception\InvalidSource;
 use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
@@ -107,7 +107,7 @@ final class ParameterSource implements ReflectorSource
 				$message = "Parameter {$data['class']}::{$data['function']}({$data['parameter']}) does not exist";
 			}
 
-			$this->failure = InvalidState::create()
+			$this->failure = InvalidSource::create($this)
 				->withMessage("Deserialization failed due to following error:\n$message")
 				->withPrevious($exception);
 		}

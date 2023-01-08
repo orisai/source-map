@@ -2,8 +2,8 @@
 
 namespace Orisai\SourceMap;
 
-use Orisai\Exceptions\Logic\InvalidArgument;
 use Orisai\Exceptions\Message;
+use Orisai\SourceMap\Exception\InvalidSource;
 use Orisai\Utils\Reflection\Classes;
 use function get_class;
 
@@ -28,7 +28,7 @@ trait CheckNotWrappedAboveReflectorSource
 			->withProblem("Given class '$class' implements '$interface'" .
 				" and cannot be wrapped in another '$interfaceShort'.");
 
-		throw InvalidArgument::create()
+		throw InvalidSource::create($this)
 			->withMessage($message);
 	}
 
