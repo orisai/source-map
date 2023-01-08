@@ -2,6 +2,7 @@
 
 namespace Tests\Orisai\SourceMap\Doubles;
 
+use DateTimeImmutable;
 use Orisai\SourceMap\ReflectorSource;
 
 final class TestReflectorSource implements ReflectorSource
@@ -27,6 +28,11 @@ final class TestReflectorSource implements ReflectorSource
 	public function isValid(): bool
 	{
 		return true;
+	}
+
+	public function getLastChange(): DateTimeImmutable
+	{
+		return DateTimeImmutable::createFromFormat('U', '0');
 	}
 
 	public function __toString(): string

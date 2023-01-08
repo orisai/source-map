@@ -2,6 +2,7 @@
 
 namespace Orisai\SourceMap;
 
+use DateTimeImmutable;
 use Reflector;
 
 /**
@@ -45,6 +46,11 @@ final class EmptyAboveReflectorSource implements AboveReflectorSource
 	public function isValid(): bool
 	{
 		return $this->target->isValid();
+	}
+
+	public function getLastChange(): DateTimeImmutable
+	{
+		return $this->getTarget()->getLastChange();
 	}
 
 	public function __toString(): string

@@ -2,10 +2,13 @@
 
 namespace Orisai\SourceMap;
 
+use DateTimeImmutable;
 use Orisai\SourceMap\Exception\InvalidSource;
 use ReflectionException;
 use ReflectionFunction;
 use Throwable;
+use function assert;
+use function filemtime;
 use function implode;
 
 /**
@@ -56,6 +59,27 @@ final class FunctionSource implements ReflectorSource
 		throw InvalidSource::create($this)
 			->withMessage("Deserialization failed due to following error:\n{$this->failure->getMessage()}")
 			->withPrevious($this->failure);
+	}
+
+	public function getLastChange(): DateTimeImmutable
+	{
+		$file = $this->getReflector()->getFileName();
+
+		// Internal class
+		if ($file === false) {
+			$datetime = DateTimeImmutable::createFromFormat('U', '0');
+			assert($datetime !== false);
+
+			return $datetime;
+		}
+
+		$time = filemtime($file);
+		assert($time !== false);
+
+		$datetime = DateTimeImmutable::createFromFormat('U', (string) $time);
+		assert($datetime !== false);
+
+		return $datetime;
 	}
 
 	public function __toString(): string

@@ -40,8 +40,13 @@ final class ParameterSourceTest extends TestCase
 		self::assertTrue($source->isValid());
 		self::assertEquals($methodSource, $source->getFunction());
 		self::assertSame($reflector, $source->getReflector());
+
 		self::assertSame("{$class}->test(test)", $source->toString());
 		self::assertSame($source->toString(), (string) $source);
+
+		self::assertEquals($source->getFunction()->getLastChange(), $source->getLastChange());
+		self::assertGreaterThanOrEqual(2_023, (int) $source->getLastChange()->format('Y'));
+
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

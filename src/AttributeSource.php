@@ -2,6 +2,7 @@
 
 namespace Orisai\SourceMap;
 
+use DateTimeImmutable;
 use Orisai\Exceptions\Message;
 use Orisai\SourceMap\Exception\InvalidSource;
 use Reflector;
@@ -89,6 +90,11 @@ final class AttributeSource implements AboveReflectorSource
 
 		throw InvalidSource::create($this)
 			->withMessage($message);
+	}
+
+	public function getLastChange(): DateTimeImmutable
+	{
+		return $this->getTarget()->getLastChange();
 	}
 
 	public function __toString(): string

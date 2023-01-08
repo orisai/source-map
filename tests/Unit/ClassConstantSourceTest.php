@@ -32,8 +32,13 @@ final class ClassConstantSourceTest extends TestCase
 		self::assertTrue($source->isValid());
 		self::assertEquals($classSource, $source->getClass());
 		self::assertSame($reflector, $source->getReflector());
+
 		self::assertSame("$class::Test", $source->toString());
 		self::assertSame($source->toString(), (string) $source);
+
+		self::assertEquals($source->getClass()->getLastChange(), $source->getLastChange());
+		self::assertGreaterThanOrEqual(2_023, (int) $source->getLastChange()->format('Y'));
+
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

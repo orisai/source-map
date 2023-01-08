@@ -9,6 +9,7 @@ use Orisai\SourceMap\Exception\InvalidSource;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
+use stdClass;
 use Tests\Orisai\SourceMap\Doubles\AnnotatedReflectedClass;
 use function preg_replace;
 use function serialize;
@@ -28,8 +29,24 @@ final class ClassSourceTest extends TestCase
 
 		self::assertTrue($source->isValid());
 		self::assertSame($reflector, $source->getReflector());
+
 		self::assertSame($class, $source->toString());
 		self::assertSame($source->toString(), (string) $source);
+
+		self::assertGreaterThanOrEqual(2_023, (int) $source->getLastChange()->format('Y'));
+
+		self::assertEquals($source, unserialize(serialize($source)));
+	}
+
+	public function testInternalClass(): void
+	{
+		$class = stdClass::class;
+		$reflector = new ReflectionClass($class);
+
+		$source = new ClassSource($reflector);
+
+		self::assertTrue($source->isValid());
+		self::assertSame(1_970, (int) $source->getLastChange()->format('Y'));
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

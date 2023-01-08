@@ -2,12 +2,16 @@
 
 namespace Orisai\SourceMap;
 
+use DateTimeImmutable;
+
 interface Source
 {
 
 	public function toString(): string;
 
 	public function isValid(): bool;
+
+	public function getLastChange(): DateTimeImmutable;
 
 	public function __toString(): string;
 

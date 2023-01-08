@@ -2,7 +2,10 @@
 
 namespace Orisai\SourceMap;
 
+use DateTimeImmutable;
 use Symfony\Component\Filesystem\Path;
+use function assert;
+use function filemtime;
 use function is_file;
 
 /**
@@ -89,6 +92,17 @@ final class FileSource implements Source
 	public function isValid(): bool
 	{
 		return is_file($this->fullPath);
+	}
+
+	public function getLastChange(): DateTimeImmutable
+	{
+		$time = filemtime($this->fullPath);
+		assert($time !== false);
+
+		$datetime = DateTimeImmutable::createFromFormat('U', (string) $time);
+		assert($datetime !== false);
+
+		return $datetime;
 	}
 
 	public function __toString(): string

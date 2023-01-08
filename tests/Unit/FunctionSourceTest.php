@@ -33,8 +33,24 @@ final class FunctionSourceTest extends TestCase
 
 		self::assertTrue($source->isValid());
 		self::assertSame($reflector, $source->getReflector());
+
 		self::assertSame("$function()", $source->toString());
 		self::assertSame($source->toString(), (string) $source);
+
+		self::assertGreaterThanOrEqual(2_023, (int) $source->getLastChange()->format('Y'));
+
+		self::assertEquals($source, unserialize(serialize($source)));
+	}
+
+	public function testInternalFunction(): void
+	{
+		$function = 'strlen';
+		$reflector = new ReflectionFunction($function);
+
+		$source = new FunctionSource($reflector);
+
+		self::assertTrue($source->isValid());
+		self::assertSame(1_970, (int) $source->getLastChange()->format('Y'));
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

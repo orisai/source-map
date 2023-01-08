@@ -2,6 +2,7 @@
 
 namespace Orisai\SourceMap;
 
+use DateTimeImmutable;
 use Orisai\SourceMap\Exception\InvalidSource;
 use ReflectionException;
 use ReflectionFunction;
@@ -71,6 +72,11 @@ final class ParameterSource implements ReflectorSource
 		}
 
 		throw $this->failure;
+	}
+
+	public function getLastChange(): DateTimeImmutable
+	{
+		return $this->getFunction()->getLastChange();
 	}
 
 	public function __toString(): string

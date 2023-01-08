@@ -57,4 +57,7 @@ assert($source instanceof AnnotationSource);
 
 // Ensure source is still valid after un-serialization
 $source->isValid(); // bool
+
+// Check last time source has changed
+$source->getLastChange(); // DateTimeImmutable
 ```

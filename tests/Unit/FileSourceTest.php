@@ -20,12 +20,17 @@ final class FileSourceTest extends TestCase
 		$source = new FileSource($fullPath);
 
 		self::assertTrue($source->isValid());
+
 		self::assertSame($fullPath, $source->getFullPath());
 		self::assertNull($source->getRelativePath());
 		self::assertNull($source->getLine());
 		self::assertNull($source->getColumn());
+
 		self::assertSame($fullPath, $source->toString());
 		self::assertSame($source->toString(), (string) $source);
+
+		self::assertGreaterThanOrEqual(2_023, (int) $source->getLastChange()->format('Y'));
+
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 

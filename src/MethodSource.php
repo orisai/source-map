@@ -2,6 +2,7 @@
 
 namespace Orisai\SourceMap;
 
+use DateTimeImmutable;
 use Orisai\SourceMap\Exception\InvalidSource;
 use ReflectionException;
 use ReflectionMethod;
@@ -67,6 +68,11 @@ final class MethodSource implements ReflectorSource
 		throw InvalidSource::create($this)
 			->withMessage("Deserialization failed due to following error:\n{$this->failure->getMessage()}")
 			->withPrevious($this->failure);
+	}
+
+	public function getLastChange(): DateTimeImmutable
+	{
+		return $this->getClass()->getLastChange();
 	}
 
 	public function __toString(): string

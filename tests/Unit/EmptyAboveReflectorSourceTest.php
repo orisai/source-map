@@ -37,8 +37,13 @@ final class EmptyAboveReflectorSourceTest extends TestCase
 		self::assertTrue($source->isValid());
 		self::assertSame($target, $source->getTarget());
 		self::assertSame($target->getReflector(), $source->getReflector());
+
 		self::assertSame("$string empty source", $source->toString());
 		self::assertSame($source->toString(), (string) $source);
+
+		self::assertEquals($target->getLastChange(), $source->getLastChange());
+		self::assertGreaterThanOrEqual(2_023, (int) $source->getLastChange()->format('Y'));
+
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
 
