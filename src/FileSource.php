@@ -3,6 +3,9 @@
 namespace Orisai\SourceMap;
 
 use DateTimeImmutable;
+use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\SourceMap\Exception\InvalidSource;
+use SplFileObject;
 use Symfony\Component\Filesystem\Path;
 use function assert;
 use function filemtime;
@@ -38,6 +41,8 @@ final class FileSource implements Source
 		$this->basePath = $basePath;
 		$this->line = $line;
 		$this->column = $column;
+
+		$this->throwIfInvalid(false);
 	}
 
 	public function getFullPath(): string
@@ -91,11 +96,47 @@ final class FileSource implements Source
 
 	public function isValid(): bool
 	{
-		return is_file($this->fullPath);
+		try {
+			$this->throwIfInvalid(true);
+		} catch (InvalidSource $exception) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private function throwIfInvalid(bool $existingSource): void
+	{
+		$e = $existingSource ? InvalidSource::create($this) : InvalidArgument::create();
+
+		if (!is_file($this->fullPath)) {
+			throw $e
+				->withMessage("File '$this->fullPath' does not exist.");
+		}
+
+		if ($this->line !== null) {
+			$file = new SplFileObject($this->fullPath);
+			$file->seek($this->line - 1);
+
+			$lineContent = $file->current();
+			if ($lineContent === false) {
+				throw $e
+					->withMessage("File '$this->fullPath' does not have 'line $this->line'.");
+			}
+
+			if ($this->column !== null && !isset($lineContent[$this->column - 1])) {
+				throw $e
+					->withMessage("File '$this->fullPath' at 'line $this->line' does not have 'column $this->column'.");
+			}
+
+			unset($file);
+		}
 	}
 
 	public function getLastChange(): DateTimeImmutable
 	{
+		$this->throwIfInvalid(true);
+
 		$time = filemtime($this->fullPath);
 		assert($time !== false);
 

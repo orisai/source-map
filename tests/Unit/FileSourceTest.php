@@ -3,6 +3,8 @@
 namespace Tests\Orisai\SourceMap\Unit;
 
 use Generator;
+use Orisai\Exceptions\Logic\InvalidArgument;
+use Orisai\SourceMap\Exception\InvalidSource;
 use Orisai\SourceMap\FileSource;
 use PHPUnit\Framework\TestCase;
 use function dirname;
@@ -72,12 +74,12 @@ final class FileSourceTest extends TestCase
 	{
 		$fullPath = __FILE__;
 
-		$source = new FileSource(__FILE__, null, 69, 666);
+		$source = new FileSource(__FILE__, null, 1, 3);
 
 		self::assertTrue($source->isValid());
-		self::assertSame(69, $source->getLine());
-		self::assertSame(666, $source->getColumn());
-		self::assertSame("$fullPath:69:666", $source->toString());
+		self::assertSame(1, $source->getLine());
+		self::assertSame(3, $source->getColumn());
+		self::assertSame("$fullPath:1:3", $source->toString());
 		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
@@ -86,12 +88,12 @@ final class FileSourceTest extends TestCase
 	{
 		$fullPath = __FILE__;
 
-		$source = new FileSource(__FILE__, null, 42);
+		$source = new FileSource(__FILE__, null, 1);
 
 		self::assertTrue($source->isValid());
-		self::assertSame(42, $source->getLine());
+		self::assertSame(1, $source->getLine());
 		self::assertNull($source->getColumn());
-		self::assertSame("$fullPath:42", $source->toString());
+		self::assertSame("$fullPath:1", $source->toString());
 		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
@@ -100,12 +102,12 @@ final class FileSourceTest extends TestCase
 	{
 		$fullPath = __FILE__;
 
-		$source = new FileSource(__FILE__, null, null, 420);
+		$source = new FileSource(__FILE__, null, null, 3);
 
 		self::assertTrue($source->isValid());
 		self::assertSame(1, $source->getLine());
-		self::assertSame(420, $source->getColumn());
-		self::assertSame("$fullPath:1:420", $source->toString());
+		self::assertSame(3, $source->getColumn());
+		self::assertSame("$fullPath:1:3", $source->toString());
 		self::assertSame($source->toString(), (string) $source);
 		self::assertEquals($source, unserialize(serialize($source)));
 	}
@@ -113,17 +115,74 @@ final class FileSourceTest extends TestCase
 	/**
 	 * @dataProvider provideInvalid
 	 */
-	public function testInvalid(string $fullPath): void
+	public function testInvalidFile(string $fullPath): void
 	{
-		$source = new FileSource($fullPath);
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage("File '$fullPath' does not exist.");
 
-		self::assertFalse($source->isValid());
+		new FileSource($fullPath);
 	}
 
 	public function provideInvalid(): Generator
 	{
 		yield [__DIR__ . '/non-existent.php'];
 		yield [__DIR__];
+	}
+
+	public function testInvalidLine(): void
+	{
+		$fullPath = __DIR__ . '/../Doubles/file.txt';
+
+		// Is okay
+		new FileSource($fullPath, null, 5);
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(
+			"File '$fullPath' does not have 'line 6'.",
+		);
+
+		new FileSource($fullPath, null, 6);
+	}
+
+	public function testInvalidColumn(): void
+	{
+		$fullPath = __DIR__ . '/../Doubles/file.txt';
+
+		// Is okay
+		new FileSource($fullPath, null, 1, 1);
+		new FileSource($fullPath, null, 1, 3);
+		new FileSource($fullPath, null, 3, 1);
+
+		$this->expectException(InvalidArgument::class);
+		$this->expectExceptionMessage(
+			"File '$fullPath' at 'line 3' does not have 'column 2'.",
+		);
+
+		new FileSource($fullPath, null, 3, 2);
+	}
+
+	public function testInvalidUnSerialized(): void
+	{
+		$fullPath = __DIR__ . '/non-existent.php';
+		$length = strlen($fullPath);
+		// phpcs:ignore SlevomatCodingStandard.Files.LineLength
+		$serialized = "O:27:\"Orisai\SourceMap\FileSource\":4:{s:8:\"fullPath\";s:$length:\"$fullPath\";s:8:\"basePath\";N;s:4:\"line\";N;s:6:\"column\";N;}";
+
+		$source = unserialize($serialized);
+		self::assertInstanceOf(FileSource::class, $source);
+
+		self::assertFalse($source->isValid());
+		self::assertSame($fullPath, $source->getFullPath());
+		self::assertNull($source->getRelativePath());
+		self::assertNull($source->getLine());
+		self::assertNull($source->getColumn());
+		self::assertSame($fullPath, $source->toString());
+		self::assertEquals($source, unserialize(serialize($source)));
+
+		$this->expectException(InvalidSource::class);
+		$this->expectExceptionMessage("File '$fullPath' does not exist.");
+
+		$source->getLastChange();
 	}
 
 }
