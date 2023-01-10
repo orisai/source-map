@@ -11,6 +11,7 @@ use function dirname;
 use function serialize;
 use function strlen;
 use function unserialize;
+use const PHP_EOL;
 
 final class FileSourceTest extends TestCase
 {
@@ -153,12 +154,13 @@ final class FileSourceTest extends TestCase
 		new FileSource($fullPath, null, 1, 3);
 		new FileSource($fullPath, null, 3, 1);
 
+		$col = 1 + strlen(PHP_EOL);
 		$this->expectException(InvalidArgument::class);
 		$this->expectExceptionMessage(
-			"File '$fullPath' at 'line 3' does not have 'column 2'.",
+			"File '$fullPath' at 'line 3' does not have 'column $col'.",
 		);
 
-		new FileSource($fullPath, null, 3, 2);
+		new FileSource($fullPath, null, 3, $col);
 	}
 
 	public function testInvalidUnSerialized(): void
