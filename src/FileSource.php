@@ -14,7 +14,7 @@ use function is_file;
 /**
  * @readonly
  */
-final class FileSource implements Source
+final class FileSource implements SelfCheckingSource
 {
 
 	private string $fullPath;

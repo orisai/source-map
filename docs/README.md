@@ -184,8 +184,9 @@ $source->getTarget()->getReflector(); // ReflectionClass
 
 ## Validation
 
-Sources are validated for existence when constructed or deserialized. But to not fail deserialization completely, error
-is thrown only when a method is called on a source.
+Sources which implement `SelfCheckingSource` are self-validated for existence when constructed. Also, when
+changed and no longer valid, `Source->isValid()` will return `false` and methods working may even throw `InvalidSource`
+exception.
 
 ```php
 use Orisai\SourceMap\Source;
@@ -201,5 +202,67 @@ if ($source->isValid()) {
 if (!$source->isValid()) {
 	// Calling any method that requires source throws an exception
 	$source->toString(); // throws InvalidSource
+}
+```
+
+To check any sources, use `SourceChecker` interface
+
+```php
+use Orisai\SourceMap\Check\DefaultSourceChecker;
+use Orisai\SourceMap\Check\SourceChecker;
+
+$checker = new DefaultSourceChecker();
+assert($checker instanceof SourceChecker);
+
+$checker->isValid($source); // bool
+$checker->getLastChange($source); // DateTimeImmutable
+```
+
+Each checked source type must be known by source checker. To check not self-validating source, implement
+a `SourceCheckHandler` and add it to source checker
+
+```php
+$checker->addHandler(new ExampleSourceCheckHandler());
+```
+
+```php
+use DateTimeImmutable;
+use Orisai\SourceMap\Check\SourceCheckHandler;
+use Orisai\SourceMap\Source;
+
+/**
+ * @implements SourceCheckHandler<ExampleSourceOne|ExampleSourceTwo>
+ */
+final class ExampleSourceCheckHandler implements SourceCheckHandler
+{
+
+	public static function getSupported(): array
+	{
+		return [
+			ExampleSourceOne::class,
+			ExampleSourceTwo::class,
+		];
+	}
+
+	public function isValid(Source $source): bool
+	{
+		if ($source instanceof ExampleSourceOne) {
+			// Shenanigans
+		}
+
+		assert($source instanceof ExampleSourceTwo);
+		// Dark magic
+	}
+
+	public function getLastChange(Source $source): DateTimeImmutable
+	{
+		if ($source instanceof ExampleSourceOne) {
+			// Shenanigans
+		}
+
+		assert($source instanceof ExampleSourceTwo);
+		// Dark magic
+	}
+
 }
 ```

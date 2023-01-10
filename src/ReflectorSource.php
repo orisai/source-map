@@ -4,7 +4,7 @@ namespace Orisai\SourceMap;
 
 use Reflector;
 
-interface ReflectorSource extends Source
+interface ReflectorSource extends SelfCheckingSource
 {
 
 	public function getReflector(): Reflector;
