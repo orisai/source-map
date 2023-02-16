@@ -1,0 +1,66 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Class Tests\\\\Orisai\\\\SourceMap\\\\Doubles\\\\TestEmptySourceCheckHandler implements generic interface Orisai\\\\SourceMap\\\\Check\\\\SourceCheckHandler but does not specify its types\\: T$#"
+			count: 1
+			path: ../tests/Doubles/TestEmptySourceCheckHandler.php
+
+		-
+			message: "#^Method Tests\\\\Orisai\\\\SourceMap\\\\Doubles\\\\TestReflector\\:\\:export\\(\\) never returns string so it can be removed from the return type\\.$#"
+			count: 1
+			path: ../tests/Doubles/TestReflector.php
+
+		-
+			message: "#^Method Tests\\\\Orisai\\\\SourceMap\\\\Doubles\\\\TestReflectorSource\\:\\:getLastChange\\(\\) should return DateTimeImmutable but returns DateTimeImmutable\\|false\\.$#"
+			count: 1
+			path: ../tests/Doubles/TestReflectorSource.php
+
+		-
+			message: "#^Property Tests\\\\Orisai\\\\SourceMap\\\\Doubles\\\\TestSelfCheckingSource\\:\\:\\$lastChange \\(DateTimeImmutable\\) does not accept DateTimeImmutable\\|false\\.$#"
+			count: 1
+			path: ../tests/Doubles/TestSelfCheckingSource.php
+
+		-
+			message: "#^Class Tests\\\\Orisai\\\\SourceMap\\\\Doubles\\\\TestSourceCheckHandler implements generic interface Orisai\\\\SourceMap\\\\Check\\\\SourceCheckHandler but does not specify its types\\: T$#"
+			count: 1
+			path: ../tests/Doubles/TestSourceCheckHandler.php
+
+		-
+			message: "#^Method Tests\\\\Orisai\\\\SourceMap\\\\Unit\\\\AnnotationSourceTest\\:\\:testTargetUnSerializationFailure\\(\\) has parameter \\$call with no signature specified for Closure\\.$#"
+			count: 1
+			path: ../tests/Unit/AnnotationSourceTest.php
+
+		-
+			message: "#^Method Tests\\\\Orisai\\\\SourceMap\\\\Unit\\\\AttributeSourceTest\\:\\:testTargetUnSerializationFailure\\(\\) has parameter \\$call with no signature specified for Closure\\.$#"
+			count: 1
+			path: ../tests/Unit/AttributeSourceTest.php
+
+		-
+			message: "#^Method Tests\\\\Orisai\\\\SourceMap\\\\Unit\\\\ClassConstantSourceTest\\:\\:testUnSerializationFailure\\(\\) has parameter \\$call with no signature specified for Closure\\.$#"
+			count: 1
+			path: ../tests/Unit/ClassConstantSourceTest.php
+
+		-
+			message: "#^Method Tests\\\\Orisai\\\\SourceMap\\\\Unit\\\\ClassSourceTest\\:\\:testUnSerializationFailure\\(\\) has parameter \\$call with no signature specified for Closure\\.$#"
+			count: 1
+			path: ../tests/Unit/ClassSourceTest.php
+
+		-
+			message: "#^Method Tests\\\\Orisai\\\\SourceMap\\\\Unit\\\\FunctionSourceTest\\:\\:testUnSerializationFailure\\(\\) has parameter \\$call with no signature specified for Closure\\.$#"
+			count: 1
+			path: ../tests/Unit/FunctionSourceTest.php
+
+		-
+			message: "#^Method Tests\\\\Orisai\\\\SourceMap\\\\Unit\\\\MethodSourceTest\\:\\:testUnSerializationFailure\\(\\) has parameter \\$call with no signature specified for Closure\\.$#"
+			count: 1
+			path: ../tests/Unit/MethodSourceTest.php
+
+		-
+			message: "#^Method Tests\\\\Orisai\\\\SourceMap\\\\Unit\\\\ParameterSourceTest\\:\\:testUnSerializationFailure\\(\\) has parameter \\$call with no signature specified for Closure\\.$#"
+			count: 1
+			path: ../tests/Unit/ParameterSourceTest.php
+
+		-
+			message: "#^Method Tests\\\\Orisai\\\\SourceMap\\\\Unit\\\\PropertySourceTest\\:\\:testUnSerializationFailure\\(\\) has parameter \\$call with no signature specified for Closure\\.$#"
+			count: 1
+			path: ../tests/Unit/PropertySourceTest.php

@@ -17,8 +17,8 @@
 </p>
 
 <p align="center">
-	<a href="https://github.com/orisai/source-map/actions?query=workflow%3Aci">
-		<img src="https://github.com/orisai/source-map/workflows/ci/badge.svg">
+	<a href="https://github.com/orisai/source-map/actions?query=workflow%3ACI">
+		<img src="https://github.com/orisai/source-map/workflows/CI/badge.svg">
 	</a>
 	<a href="https://coveralls.io/r/orisai/source-map">
 		<img src="https://badgen.net/coveralls/c/github/orisai/source-map/v1.x?cache=300">
