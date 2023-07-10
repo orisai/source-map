@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/orisai/source-map/compare/1.0.0...HEAD)
 
+### Changed
+
+- `PropertySource->toString()` returns non-static property name without `$` prefix to match PHP behaviour
+
 ## [1.0.0](https://github.com/orisai/source-map/releases/tag/1.0.0) - 2023-01-10
 
 ### Added

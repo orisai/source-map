@@ -42,10 +42,10 @@ final class PropertySource implements ReflectorSource
 		$this->throwIfInvalid();
 
 		$symbol = $this->reflector->isStatic()
-			? '::'
+			? '::$'
 			: '->';
 
-		return "{$this->getClass()->toString()}$symbol\${$this->reflector->getName()}";
+		return "{$this->getClass()->toString()}$symbol{$this->reflector->getName()}";
 	}
 
 	public function isValid(): bool

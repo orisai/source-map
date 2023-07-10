@@ -68,7 +68,7 @@ final class AnnotationSourceTest extends TestCase
 
 		yield [
 			new PropertySource(new ReflectionProperty($class, 'test')),
-			"{$class}->\$test",
+			"{$class}->test",
 		];
 
 		require_once __DIR__ . '/../Doubles/testFunction.php';
