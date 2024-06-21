@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Allow PHP 8.3
+- Allow symfony/filesystem:^7.0.0
 
 ## [1.0.0](https://github.com/orisai/source-map/releases/tag/1.0.0) - 2023-01-10
 
