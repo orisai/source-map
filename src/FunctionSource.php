@@ -19,11 +19,12 @@ final class FunctionSource implements ReflectorSource
 
 	private ReflectionFunction $reflector;
 
-	private ?Throwable $failure = null;
+	private ?Throwable $failure;
 
 	public function __construct(ReflectionFunction $reflector)
 	{
 		$this->reflector = $reflector;
+		$this->failure = null;
 	}
 
 	public function getReflector(): ReflectionFunction
@@ -100,6 +101,7 @@ final class FunctionSource implements ReflectorSource
 	{
 		try {
 			$this->reflector = new ReflectionFunction($data['function']);
+			$this->failure = null;
 		} catch (ReflectionException $exception) {
 			$this->failure = $exception;
 		}

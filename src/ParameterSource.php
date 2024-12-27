@@ -19,11 +19,12 @@ final class ParameterSource implements ReflectorSource
 
 	private ReflectionParameter $reflector;
 
-	private ?Throwable $failure = null;
+	private ?Throwable $failure;
 
 	public function __construct(ReflectionParameter $reflector)
 	{
 		$this->reflector = $reflector;
+		$this->failure = null;
 	}
 
 	/**
@@ -107,6 +108,7 @@ final class ParameterSource implements ReflectorSource
 			$this->reflector = $class !== null
 				? new ReflectionParameter([$class, $function], $parameter)
 				: new ReflectionParameter($function, $parameter);
+			$this->failure = null;
 		} catch (ReflectionException $exception) {
 			$message = $exception->getMessage();
 			if ($message === 'The parameter specified by its name could not be found') {

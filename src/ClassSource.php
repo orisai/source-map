@@ -19,7 +19,7 @@ final class ClassSource implements ReflectorSource
 	/** @var ReflectionClass<object> */
 	private ReflectionClass $reflector;
 
-	private ?Throwable $failure = null;
+	private ?Throwable $failure;
 
 	/**
 	 * @param ReflectionClass<object> $reflector
@@ -27,6 +27,7 @@ final class ClassSource implements ReflectorSource
 	public function __construct(ReflectionClass $reflector)
 	{
 		$this->reflector = $reflector;
+		$this->failure = null;
 	}
 
 	/**
@@ -101,6 +102,7 @@ final class ClassSource implements ReflectorSource
 	{
 		try {
 			$this->reflector = new ReflectionClass($data['class']);
+			$this->failure = null;
 		} catch (ReflectionException $exception) {
 			$this->failure = $exception;
 		}

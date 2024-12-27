@@ -17,11 +17,12 @@ final class MethodSource implements ReflectorSource
 
 	private ReflectionMethod $reflector;
 
-	private ?Throwable $failure = null;
+	private ?Throwable $failure;
 
 	public function __construct(ReflectionMethod $reflector)
 	{
 		$this->reflector = $reflector;
+		$this->failure = null;
 	}
 
 	public function getClass(): ClassSource
@@ -94,6 +95,7 @@ final class MethodSource implements ReflectorSource
 	{
 		try {
 			$this->reflector = new ReflectionMethod($data['class'], $data['method']);
+			$this->failure = null;
 		} catch (ReflectionException $exception) {
 			$this->failure = $exception;
 		}

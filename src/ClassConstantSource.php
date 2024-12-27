@@ -16,11 +16,12 @@ final class ClassConstantSource implements ReflectorSource
 
 	private ReflectionClassConstant $reflector;
 
-	private ?Throwable $failure = null;
+	private ?Throwable $failure;
 
 	public function __construct(ReflectionClassConstant $reflector)
 	{
 		$this->reflector = $reflector;
+		$this->failure = null;
 	}
 
 	public function getClass(): ClassSource
@@ -82,6 +83,7 @@ final class ClassConstantSource implements ReflectorSource
 	{
 		try {
 			$this->reflector = new ReflectionClassConstant($data['class'], $data['constant']);
+			$this->failure = null;
 		} catch (ReflectionException $exception) {
 			$this->failure = $exception;
 		}

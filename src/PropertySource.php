@@ -16,11 +16,12 @@ final class PropertySource implements ReflectorSource
 
 	private ReflectionProperty $reflector;
 
-	private ?Throwable $failure = null;
+	private ?Throwable $failure;
 
 	public function __construct(ReflectionProperty $reflector)
 	{
 		$this->reflector = $reflector;
+		$this->failure = null;
 	}
 
 	public function getClass(): ClassSource
@@ -88,6 +89,7 @@ final class PropertySource implements ReflectorSource
 	{
 		try {
 			$this->reflector = new ReflectionProperty($data['class'], $data['property']);
+			$this->failure = null;
 		} catch (ReflectionException $exception) {
 			$this->failure = $exception;
 		}
