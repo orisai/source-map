@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/orisai/source-map/compare/1.0.1...v1.x)
 
+### Added
+
+- Allow PHP 8.4
+
 ## [1.0.1](https://github.com/orisai/source-map/compare/1.0.0...1.0.1) - 2024-06-21
 
 ### Added
