@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/orisai/source-map/compare/1.0.2...v1.x)
 
+### Fixed
+
+- PHPStan generics
+
 ## [1.0.2](https://github.com/orisai/source-map/compare/1.0.1...1.0.2) - 2024-12-29
 
 ### Added

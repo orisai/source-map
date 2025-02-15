@@ -16,13 +16,13 @@ use function filemtime;
 final class ClassSource implements ReflectorSource
 {
 
-	/** @var ReflectionClass<object> */
+	/** @var ReflectionClass<covariant object> */
 	private ReflectionClass $reflector;
 
 	private ?Throwable $failure;
 
 	/**
-	 * @param ReflectionClass<object> $reflector
+	 * @param ReflectionClass<covariant object> $reflector
 	 */
 	public function __construct(ReflectionClass $reflector)
 	{
@@ -31,7 +31,7 @@ final class ClassSource implements ReflectorSource
 	}
 
 	/**
-	 * @return ReflectionClass<object>
+	 * @return ReflectionClass<covariant object>
 	 */
 	public function getReflector(): ReflectionClass
 	{
